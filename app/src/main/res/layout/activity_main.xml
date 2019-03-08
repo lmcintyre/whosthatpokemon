@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/pkmnImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="273dp"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        app:srcCompat="@drawable/charmander" />
+
+    <org.team7.wtp.ObscuringImageView
+        android:id="@+id/silhouetteImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="273dp"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        app:srcCompat="@drawable/empty" />
+
+    <org.team7.wtp.ObscuringView
+        android:id="@+id/obscuringView"
+        android:layout_width="wrap_content"
+        android:layout_height="273dp"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:adjustViewBounds="true"
+        android:layout_weight="1"
+    />
+
+    <!--<ImageView-->
+        <!--android:id="@+id/obscuringImageView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="273dp"-->
+        <!--android:layout_gravity="center_horizontal|center_vertical"-->
+        <!--android:layout_weight="1"-->
+        <!--app:srcCompat="@drawable/empty" />-->
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="255" />
+</android.widget.FrameLayout>
