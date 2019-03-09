@@ -7,14 +7,12 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PathEffect;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +40,13 @@ public class ObscuringView extends View {
         setUpDrawing();
     }
 
+    public void reset() {
+        // Dummy bitmap to draw so bitmap isn't null
+        bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+        bitmap.eraseColor(Color.TRANSPARENT);
+        mCanvas.setBitmap(bitmap);
+    }
+
     private void setUpDrawing() {
         mCanvas = new Canvas();
         matrix = new Matrix();
@@ -51,16 +56,13 @@ public class ObscuringView extends View {
         paint = new Paint();
         paint.setAntiAlias(true);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-//        paint.setPathEffect()
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.TRANSPARENT);
         paint.setAlpha(0);
         paint.setStrokeWidth(5);
         paint.setStrokeCap(Paint.Cap.ROUND);
 
-        bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-        mCanvas.setBitmap(bitmap);
-//        bitmap.eraseColor(Color.TRANSPARENT);
+        reset();
     }
 
     public void setUpBitmap(int x, int y) {

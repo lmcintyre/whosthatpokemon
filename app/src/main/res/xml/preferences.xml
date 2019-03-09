@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:entries="@array/mode_list"
+        android:entryValues="@array/mode_list"
+        android:key="pref_mode"
+        android:title="test"
+        android:summary="test summary"
+        android:defaultValue="CLASSIC" />
+
+    <MultiSelectListPreference
+        android:entries="@array/regions_list"
+        android:entryValues="@array/regions_list"
+        android:key="pref_regions"
+        android:title="@string/regions"
+        android:summary="@string/regions_desc"
+        android:defaultValue="@array/regions_list" />
+
+
+
+</PreferenceScreen>

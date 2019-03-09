@@ -2,6 +2,7 @@ package org.team7.wtp;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.AttributeSet;
 
@@ -15,18 +16,26 @@ public class ObscuringImageView extends android.support.v7.widget.AppCompatImage
     }
 
     public void setSilhouetteBitmap(Bitmap b) {
-        Bitmap bitmap = b.copy(b.getConfig(), true);
+        int w = b.getWidth(), h = b.getHeight();
 
-        for (int i = 0; i < b.getWidth(); i++) {
-            for (int j = 0; j < b.getHeight(); j++) {
-                int pixel = b.getPixel(i, j);
-                if (Color.alpha(pixel) != 0)
-                    bitmap.setPixel(i, j, Color.BLACK);
+        int[] pixels = new int[w * h];
+        b.getPixels(pixels, 0, w, 0, 0, w, h);
+        b.recycle();
+
+        for (int i = 0; i < w; i++) {
+            for (int j = 0; j < h; j++) {
+                if (Color.alpha(pixels[w * i + j]) != 0)
+                    pixels[w * i + j] = Color.BLACK;
             }
         }
 
-        b.recycle();
+        Bitmap bitmap = Bitmap.createBitmap(pixels, w, h, Bitmap.Config.ARGB_8888);
         this.setImageBitmap(bitmap);
     }
 
+    public void reset() {
+        Bitmap b = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+        b.eraseColor(Color.TRANSPARENT);
+        this.setImageBitmap(b);
+    }
 }

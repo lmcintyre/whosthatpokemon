@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="mode_list">
+        <item>CLASSIC</item>
+        <item>ENHANCED</item>
+    </string-array>
+
+    <string-array name="regions_list">
+        <item>Kanto</item>
+        <item>Johto</item>
+        <item>Hoenn</item>
+        <item>Sinnoh</item>
+        <item>Unova</item>
+        <item>Kalos</item>
+        <item>Alola</item>
+    </string-array>
+
+
+
+
+
+</resources>
