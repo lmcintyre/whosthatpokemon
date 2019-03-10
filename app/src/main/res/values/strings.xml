@@ -11,4 +11,8 @@
     <string name="select_game_mode">Select Game Mode</string>
     <string name="classic">Classic</string>
     <string name="enhanced">Enhanced</string>
+    <string name="incorrect">Incorrect :(</string>
+    <string name="poke_correct">%s is correct!</string>
+    <string name="quiz_progress">Pokemon %d of %d</string>
+    <string name="placeholder_button"> </string>
 </resources>

@@ -11,8 +11,6 @@ import android.widget.Button;
 
 public class GameModeSelectFragment extends DialogFragment {
 
-    private final String MODE = "pref_mode";
-
     @Override
     public Dialog onCreateDialog(Bundle bundle) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -51,7 +49,7 @@ public class GameModeSelectFragment extends DialogFragment {
 
             // Edit the preferences
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(MODE, mode);
+            editor.putString(MainActivity.MODE, mode);
             editor.apply();
 
             if (MainActivity.GameMode.valueOf(mode) == MainActivity.GameMode.CLASSIC)
@@ -69,7 +67,7 @@ public class GameModeSelectFragment extends DialogFragment {
     private MainActivity.GameMode getCurrentMode() {
         MainActivity.GameMode mode = MainActivity.GameMode.valueOf(
                 PreferenceManager.getDefaultSharedPreferences(this.getContext())
-                        .getString(MODE, MainActivity.GameMode.CLASSIC.toString()));
+                        .getString(MainActivity.MODE, MainActivity.GameMode.CLASSIC.toString()));
         return mode;
     }
 

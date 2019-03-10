@@ -2,7 +2,6 @@ package org.team7.wtp;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.AttributeSet;
 
@@ -20,12 +19,11 @@ public class ObscuringImageView extends android.support.v7.widget.AppCompatImage
 
         int[] pixels = new int[w * h];
         b.getPixels(pixels, 0, w, 0, 0, w, h);
-        b.recycle();
 
         for (int i = 0; i < w; i++) {
             for (int j = 0; j < h; j++) {
-                if (Color.alpha(pixels[w * i + j]) != 0)
-                    pixels[w * i + j] = Color.BLACK;
+                if (Color.alpha(pixels[h * i + j]) != 0)
+                    pixels[h * i + j] = Color.BLACK;
             }
         }
 

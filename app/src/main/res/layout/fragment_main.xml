@@ -1,43 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivityFragment">
+    tools:context=".MainActivityFragment"
+    android:columnCount="1"
+    android:rowCount="4">
 
-    <ImageView
-        android:id="@+id/pkmnImageView"
+    <TextView
+        android:id="@+id/progressTextView"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/quiz_progress"
+        android:textSize="@dimen/progress_text_size"
+        android:padding="@dimen/progress_text_padding"/>
+
+    <android.widget.FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
-        android:layout_height="273dp"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:layout_weight="1"
-        android:adjustViewBounds="true"
-        app:srcCompat="@drawable/charmander" />
-
-    <org.team7.wtp.ObscuringImageView
-        android:id="@+id/silhouetteImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="273dp"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:layout_weight="1"
-        android:adjustViewBounds="true"
-        app:srcCompat="@drawable/empty" />
-
-    <org.team7.wtp.ObscuringView
-        android:id="@+id/obscuringView"
-        android:layout_width="wrap_content"
-        android:layout_height="273dp"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:adjustViewBounds="true"
-        android:layout_weight="1"
-        />
-
-    <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:progress="255"
-        android:max="255" />
-</android.widget.FrameLayout>
+        android:layout_gravity="center_vertical"
+        android:paddingTop="40dp"
+        tools:context=".MainActivityFragment">
+
+        <ImageView
+            android:id="@+id/pkmnImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="273dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/charmander" />
+
+        <org.team7.wtp.ObscuringImageView
+            android:id="@+id/silhouetteImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="273dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/empty" />
+
+        <org.team7.wtp.ObscuringView
+            android:id="@+id/obscuringView"
+            android:layout_width="wrap_content"
+            android:layout_height="273dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:adjustViewBounds="true" />
+
+    </android.widget.FrameLayout>
+
+    <GridLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:columnCount="2"
+        android:rowCount="2">
+
+        <Button
+            android:id="@+id/guessButton1"
+            android:layout_margin="@dimen/button_padding"
+            android:layout_width="match_parent"
+            android:text="@string/placeholder_button" />
+
+        <Button android:id="@+id/guessButton2"
+            android:layout_margin="@dimen/button_padding"
+            android:layout_width="match_parent"
+            android:text="@string/placeholder_button"
+            />
+
+        <Button android:id="@+id/guessButton3"
+            android:layout_margin="@dimen/button_padding"
+            android:layout_width="match_parent"
+            android:text="@string/placeholder_button"
+            />
+
+        <Button android:id="@+id/guessButton4"
+            android:layout_margin="@dimen/button_padding"
+            android:layout_width="match_parent"
+            android:text="@string/placeholder_button"
+            />
+    </GridLayout>
+
+    <TextView
+        android:id="@+id/correctTextView"
+        android:layout_gravity="center_horizontal"
+        android:text=""
+        android:textSize="@dimen/correct_text_size"
+        android:padding="@dimen/correct_text_padding"/>
+</GridLayout>

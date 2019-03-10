@@ -14,8 +14,8 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String REGIONS = "pref_regions";
-    private static final String MODE = "pref_mode";
+    public static final String REGIONS = "pref_regions";
+    public static final String MODE = "pref_mode";
 
     private MainActivityFragment pkmnFragment;
 
