@@ -12,10 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-
 public class MainActivityFragment extends Fragment {
 
     private MainActivity.GameMode mode;
@@ -64,6 +60,7 @@ public class MainActivityFragment extends Fragment {
     }
 
     public void reset() {
+
         obsImageView.reset();
         obsView.reset();
 
@@ -71,15 +68,11 @@ public class MainActivityFragment extends Fragment {
 
         // set up the obscuring control depending on game mode
         if (mode == MainActivity.GameMode.CLASSIC) {
-            obsImageView.post(new Runnable() {
-                @Override
-                public void run() {
-                    obsImageView.setSilhouetteBitmap(charm);
-                }
-            });
+            // This used to be posted... but it would flash the Pokemon un-obscured, then obscure it
+            obsImageView.setSilhouetteBitmap(charm);
         } else {
-            int pxWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-            obsView.setUpBitmap(pxWidth, pxWidth);  // make sure this covers all images
+            final int pxWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+            obsView.post(() -> obsView.setUpBitmap(pxWidth, pxWidth));
         }
     }
 }

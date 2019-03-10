@@ -11,6 +11,7 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -28,7 +29,7 @@ public class ObscuringView extends View {
     Paint paintScreen;
 
     private final Map<Integer, Path> pathMap = new HashMap<>();
-    private final Map<Integer, Point> previousPointMap =  new HashMap<>();
+    private final Map<Integer, Point> previousPointMap = new HashMap<>();
 
     public ObscuringView(Context context) {
         super(context);
@@ -45,6 +46,8 @@ public class ObscuringView extends View {
         bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
         bitmap.eraseColor(Color.TRANSPARENT);
         mCanvas.setBitmap(bitmap);
+        mCanvas.drawBitmap(bitmap, 0, 0, paintScreen);
+        this.invalidate();
     }
 
     private void setUpDrawing() {
@@ -59,7 +62,7 @@ public class ObscuringView extends View {
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.TRANSPARENT);
         paint.setAlpha(0);
-        paint.setStrokeWidth(5);
+        paint.setStrokeWidth(10);
         paint.setStrokeCap(Paint.Cap.ROUND);
 
         reset();
@@ -71,6 +74,25 @@ public class ObscuringView extends View {
 
         mCanvas.setBitmap(bitmap);
         mCanvas.drawBitmap(bitmap, 0, 0, paintScreen);
+        this.invalidate();
+    }
+
+    // this works
+    public double getPercentErased() {
+        int w = bitmap.getWidth(), h = bitmap.getHeight();
+        int numpx = w * h;
+        int numblk = 0;
+
+        int[] pixels = new int[numpx];
+        bitmap.getPixels(pixels, 0, w, 0, 0, w, h);
+
+        for (int i = 0; i < numpx; i++)
+            if (Color.alpha(pixels[i]) != 0)
+                numblk++;
+
+        double pct = ((numblk == 0 ? 1 : numblk) / (double) numpx);
+        Log.i("obscuringview", String.format("numblk: %d\npct: %f", numblk, pct));
+        return pct;
     }
 
     @Override
@@ -89,11 +111,9 @@ public class ObscuringView extends View {
         if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN) {
             touchStarted(event.getX(actionIndex), event.getY(actionIndex),
                     event.getPointerId(actionIndex));
-        }
-        else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP) {
+        } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_POINTER_UP) {
             touchEnded(event.getPointerId(actionIndex));
-        }
-        else {
+        } else {
             touchMoved(event);
         }
 
@@ -102,12 +122,18 @@ public class ObscuringView extends View {
     }
 
     private void touchStarted(float x, float y, int lineID) {
-        Path path;       Point point;
+        Path path;
+        Point point;
         if (pathMap.containsKey(lineID)) {
-            path = pathMap.get(lineID);          path.reset();          point = previousPointMap.get(lineID);       }
-        else {
+            path = pathMap.get(lineID);
+            path.reset();
+            point = previousPointMap.get(lineID);
+        } else {
             path = new Path();
-            pathMap.put(lineID, path);          point = new Point();          previousPointMap.put(lineID, point);       }
+            pathMap.put(lineID, path);
+            point = new Point();
+            previousPointMap.put(lineID, point);
+        }
 
         path.moveTo(x, y);
         point.x = (int) x;

@@ -61,38 +61,24 @@ public class MainActivity extends AppCompatActivity {
 
         PreferenceManager.getDefaultSharedPreferences(this)
                 .registerOnSharedPreferenceChangeListener(
-                new SharedPreferences.OnSharedPreferenceChangeListener() {
-                    @Override
-                    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                        preferencesChanged = true;
+                        (sharedPreferences, key) -> {
+                            preferencesChanged = true;
 
-                        if (key.equals(REGIONS)) {
-                            Set<String> regions = sharedPreferences.getStringSet(REGIONS, null);
+                            if (key.equals(REGIONS)) {
+                                Set<String> regions = sharedPreferences.getStringSet(REGIONS, null);
 
-                            if (regions != null & regions.size() > 0) {
-                                pkmnFragment.updateRegions(sharedPreferences);
-                                pkmnFragment.reset();
-                            } else {
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                regions.add(getString(R.string.region_default));
-                                editor.putStringSet(REGIONS, regions);
-                                editor.apply();
+                                if (regions != null & regions.size() > 0) {
+                                    pkmnFragment.updateRegions(sharedPreferences);
+                                    pkmnFragment.reset();
+                                } else {
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    regions.add(getString(R.string.region_default));
+                                    editor.putStringSet(REGIONS, regions);
+                                    editor.apply();
+                                }
                             }
-                        } else if (key.equals(MODE)) {
-                            String setMode = sharedPreferences.getString(MODE, "CLASSIC");
-                            if (!pkmnFragment.getMode().toString().equals(setMode)) {
-                                if (GameMode.valueOf(setMode) == GameMode.CLASSIC)
-                                    pkmnFragment.setMode(GameMode.CLASSIC);
-                                else
-                                    pkmnFragment.setMode(GameMode.ENHANCED);
-                                pkmnFragment.reset();
-                            } else {
-                                return;
-                            }
-                        }
-                        Toast.makeText(MainActivity.this, getString(R.string.quiz_restart), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                            Toast.makeText(MainActivity.this, getString(R.string.quiz_restart), Toast.LENGTH_SHORT).show();
+                        });
     }
 
     @Override
@@ -103,8 +89,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent preferencesIntent = new Intent(this, SettingsActivity.class);
-        startActivity(preferencesIntent);
+
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent preferencesIntent = new Intent(this, SettingsActivity.class);
+                startActivity(preferencesIntent);
+                return true;
+            case R.id.action_gamemode:
+                GameModeSelectFragment frag = new GameModeSelectFragment();
+                frag.show(getSupportFragmentManager(), "game mode select");
+                return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 }
