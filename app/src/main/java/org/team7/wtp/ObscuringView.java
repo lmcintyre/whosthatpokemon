@@ -92,7 +92,7 @@ public class ObscuringView extends View {
 
         double pct = ((numblk == 0 ? 1 : numblk) / (double) numpx);
         Log.i("obscuringview", String.format("numblk: %d\npct: %f", numblk, pct));
-        return pct;
+        return 1.0 - pct;
     }
 
     @Override

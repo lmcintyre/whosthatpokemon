@@ -8,12 +8,14 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -50,13 +52,13 @@ public class MainActivityFragment extends Fragment {
     private int numQuestions;
     private int totalGuesses;
     private int correctAnswers;
+    private double enhancedScore;
 
-    // Just make the controls spin or do something to show they got it wrong
-    // A shake like flag quiz might make us seem like a rip-off
-    private Animation spinAnimation;
+    private Animation revealAnimationSpin;
+    private Animation revealAnimationOpacity;
+    private Animation revealAnimationSpinAndOpacity;
 
-    // Spin and reveal? Or maybe just reveal like the real WTP
-    private Animation revealAnimation;
+    private Animation setBlack;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -90,6 +92,17 @@ public class MainActivityFragment extends Fragment {
             b.setOnClickListener(guessButtonListener);
 
         progressTextView.setText(getString(R.string.quiz_progress, 1, numQuestions));
+
+        revealAnimationSpin = AnimationUtils.loadAnimation(getActivity(), R.anim.reveal_spin);
+        revealAnimationOpacity = AnimationUtils.loadAnimation(getActivity(), R.anim.reveal_opacity);
+        revealAnimationSpinAndOpacity = AnimationUtils.loadAnimation(getActivity(), R.anim.reveal_spin_and_opacity);
+        setBlack = AnimationUtils.loadAnimation(getActivity(), R.anim.set_black);
+
+        // Ensures that changed properties (alpha) to not revert to their initial value after the animation is done
+        revealAnimationOpacity.setFillAfter(true);
+        revealAnimationSpinAndOpacity.setFillAfter(true);
+        setBlack.setFillAfter(true);
+
 
         return view;
     }
@@ -156,6 +169,9 @@ public class MainActivityFragment extends Fragment {
         String[] spl = filename.split("_");
         String name = spl[1];
 
+        // Special cases
+        if (name.equals("missingno"))
+            return "MissingNo.";
         if (name.equals("type null"))
             return "Type:Null";
 
@@ -221,6 +237,7 @@ public class MainActivityFragment extends Fragment {
 
         correctAnswers = 0;
         totalGuesses = 0;
+        enhancedScore = 0;
         pokes.clear();
 
         int counter = 1;
@@ -246,7 +263,7 @@ public class MainActivityFragment extends Fragment {
         String next = pokes.remove(0);
         correctPoke = next;
 
-        progressTextView.setText(getString(R.string.quiz_progress, correctAnswers + 1, numQuestions));
+        progressTextView.setText(getString(R.string.quiz_progress, totalGuesses + 1, numQuestions));
 
         AssetManager assets = getActivity().getAssets();
 
@@ -254,11 +271,17 @@ public class MainActivityFragment extends Fragment {
             Bitmap b = BitmapFactory.decodeStream(is);
             imgView.setImageBitmap(b);
 
+
+
             // set up the obscuring control depending on game mode
             if (mode == MainActivity.GameMode.CLASSIC) {
+                obsImageView.startAnimation(setBlack);
+
                 // This used to be posted... but it would flash the Pokemon un-obscured, then obscure it
                 obsImageView.setSilhouetteBitmap(b);
             } else {
+                obsView.startAnimation(setBlack);
+
                 final int pxWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
                 obsView.setUpBitmap(pxWidth, pxWidth);
             }
@@ -280,37 +303,64 @@ public class MainActivityFragment extends Fragment {
         buttons.get(correctGuess).setText(getPokeName(correctPoke));
     }
 
+    private void displayResults(){
+        // Instantiate an AlertDialog.Builder with its constructor
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        // Set message for the dialog
+        if (mode == MainActivity.GameMode.CLASSIC)
+            builder.setMessage(getString(R.string.classic_results, correctAnswers, totalGuesses));
+        else
+            builder.setMessage(getString(R.string.enhanced_results, correctAnswers, totalGuesses, enhancedScore));
+
+        builder.setPositiveButton(R.string.play_again, (dialog, id) -> reset());
+        builder.setCancelable(false);
+
+        // Create the AlertDialog
+        AlertDialog dialog = builder.create();
+
+        // Showing a Dialog
+        dialog.show();
+    }
+
     private View.OnClickListener guessButtonListener = (v) -> {
         Button thisButton = (Button) v;
         String guessedPoke = thisButton.getText().toString();
         String correctAnswer = getPokeName(correctPoke);
 
+        for (Button b : buttons)
+            b.setEnabled(false);
+
         totalGuesses++;
 
+        // Update text/score based on if correct.
         if (guessedPoke.equals(correctAnswer)) {
             correctAnswers++;
+            enhancedScore += 100 - (100 * obsView.getPercentErased());
 
             correctTextView.setText(getString(R.string.poke_correct, correctAnswer));
-            // text color?
-
-            for (Button b : buttons)
-                b.setEnabled(false);
-
-            if (correctAnswers == numQuestions) {
-                //display results
-            } else {
-                //next question, need anim
-                handler.postDelayed(this::loadNextPoke, 2000);
-            }
         } else {
-            //incorrect anim
-
-            correctTextView.setText(R.string.incorrect);
-            //text color?
-
-            thisButton.setEnabled(false);
+            correctTextView.setText(getString(R.string.poke_incorrect, correctAnswer));
         }
 
+        // Run appropriate animation for the game mode
+        if(mode == MainActivity.GameMode.CLASSIC) {
+            // Only spin if correct. Fun is not allowed for losers
+            if (guessedPoke.equals(correctAnswer)) {
+                obsImageView.startAnimation(revealAnimationSpinAndOpacity);
+                imgView.startAnimation(revealAnimationSpin);
+            }
+            else
+                obsImageView.startAnimation(revealAnimationOpacity);
+        }
+        else{
+            obsView.startAnimation(revealAnimationOpacity);
+        }
+
+        if (totalGuesses != numQuestions)
+            handler.postDelayed(this::loadNextPoke, 3000);
+        else
+            handler.postDelayed(this::displayResults, 3000);
     };
 
 }

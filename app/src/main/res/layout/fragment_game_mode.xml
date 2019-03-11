@@ -28,6 +28,13 @@
         android:contentDescription="@string/classic_mode"
         app:srcCompat="@drawable/classic" />
 
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_weight="1"
+        android:background="@drawable/empty" />
+
     <ImageButton
         android:id="@+id/enhancedButton"
         android:layout_width="wrap_content"

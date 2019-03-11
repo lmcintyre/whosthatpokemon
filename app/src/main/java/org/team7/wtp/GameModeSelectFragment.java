@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class GameModeSelectFragment extends DialogFragment {
 
@@ -21,7 +21,6 @@ public class GameModeSelectFragment extends DialogFragment {
         );
 
         builder.setView(gameModeView);
-        builder.setTitle(R.string.select_game_mode);
 
         ImageButton classicButton = gameModeView.findViewById(R.id.classicButton);
         ImageButton enhancedButton = gameModeView.findViewById(R.id.enhancedButton);
@@ -30,11 +29,13 @@ public class GameModeSelectFragment extends DialogFragment {
 
         classicButton.setOnClickListener(v -> {
             updatePrefsAndGame(getString(R.string.classic).toUpperCase());
+            Toast.makeText(dialog.getContext(), getString(R.string.classic_selected), Toast.LENGTH_SHORT).show();
             dialog.dismiss();
         });
 
         enhancedButton.setOnClickListener(v -> {
             updatePrefsAndGame(getString(R.string.enhanced).toUpperCase());
+            Toast.makeText(dialog.getContext(), getString(R.string.enhanced_selected), Toast.LENGTH_SHORT).show();
             dialog.dismiss();
         });
 

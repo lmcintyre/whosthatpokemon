@@ -11,10 +11,15 @@
     <string name="select_game_mode">Select Game Mode</string>
     <string name="classic">Classic</string>
     <string name="enhanced">Enhanced</string>
-    <string name="incorrect">Incorrect :(</string>
+    <string name="classic_selected">The game mode has been set to Classic</string>
+    <string name="enhanced_selected">The game mode has been set to Enhanced</string>
     <string name="poke_correct">%s is correct!</string>
+    <string name="poke_incorrect">Incorrect. The correct answer is %s.</string>
     <string name="quiz_progress">Pokemon %d of %d</string>
     <string name="placeholder_button"> </string>
     <string name="enhanced_mode">Enhanced Mode</string>
     <string name="classic_mode">Classic Mode</string>
+    <string name="play_again">Play Again</string>
+    <string name="classic_results">You guessed %1$d / %2$d Pokemon correctly.</string>
+    <string name="enhanced_results">You guessed %1$d / %2$d Pokemon correctly with a score of %3$.02f.</string>
 </resources>
