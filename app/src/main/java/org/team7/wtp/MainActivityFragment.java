@@ -115,13 +115,13 @@ public class MainActivityFragment extends Fragment {
 
         Set<String> regionSet = defaultSharedPreferences.getStringSet(MainActivity.REGIONS, null);
 
-        Pair<Integer, Integer> kanto = new Pair<>(1, 151);
+        Pair<Integer, Integer> kanto = new Pair<>(0, 151);
         Pair<Integer, Integer> johto = new Pair<>(152, 251);
         Pair<Integer, Integer> hoenn = new Pair<>(252, 386);
         Pair<Integer, Integer> sinnoh = new Pair<>(387, 493);
         Pair<Integer, Integer> unova = new Pair<>(494, 649);
         Pair<Integer, Integer> kalos = new Pair<>(650, 721);
-        Pair<Integer, Integer> alola = new Pair<>(651, 809);
+        Pair<Integer, Integer> alola = new Pair<>(722, 809);
 
         if (regionSet.contains("Kanto"))
             regions.add(kanto);

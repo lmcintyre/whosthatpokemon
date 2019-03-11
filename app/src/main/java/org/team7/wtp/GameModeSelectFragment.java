@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class GameModeSelectFragment extends DialogFragment {
 
@@ -22,8 +23,8 @@ public class GameModeSelectFragment extends DialogFragment {
         builder.setView(gameModeView);
         builder.setTitle(R.string.select_game_mode);
 
-        Button classicButton = gameModeView.findViewById(R.id.classicButton);
-        Button enhancedButton = gameModeView.findViewById(R.id.enhancedButton);
+        ImageButton classicButton = gameModeView.findViewById(R.id.classicButton);
+        ImageButton enhancedButton = gameModeView.findViewById(R.id.enhancedButton);
 
         final DialogFragment dialog = this;
 
