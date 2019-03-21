@@ -1,0 +1,124 @@
+@startuml
+
+title __Team7 (Who's That Pokemon) Class Diagram__\n
+skinparam monochrome true
+
+    package org.team7.wtp {
+        class GameModeSelectFragment {
+            + onCreateDialog()\n - Creates the dialog
+            - updatePrefsAndGame()\n - Changes the gamemode preference,\nthen restarts the quiz with set mode
+            - getPkmnFragment()\n - Gets the current PkmnFragment\n (MainActivityFragment)
+            - getCurrentMode()\n - Gets the current game mode\nfrom PkmnFragment
+        }
+
+        class IgnoredPreference {
+            + IgnoredPreference()
+            + IgnoredPreference()
+            + IgnoredPreference()
+            # onCreateView()\n - Does nothing, so the preference\nis hidden in the preference fragment
+        }
+
+        class MainActivity {
+            {static} + REGIONS : String
+            {static} + MODE : String
+            - preferencesChanged : boolean
+            # onStart()
+            # onCreate()
+            + onCreateOptionsMenu()
+            + onOptionsItemSelected()
+        }
+
+        enum GameMode {
+            CLASSIC
+            ENHANCED
+        }
+
+        class MainActivityFragment {
+            {static} - TAG : String
+            - regions : List<Pair<Integer, Integer>>
+            - imgView : ImageView
+            - buttons : List<Button>
+            - progressTextView : TextView
+            - correctTextView : TextView
+            - pokePaths : List<String>
+            - pokes : List<String>
+            - random : SecureRandom
+            - handler : Handler
+            - correctPoke : String
+            - numQuestions : int
+            - totalGuesses : int
+            - correctAnswers : int
+            - enhancedScore : double
+            - revealAnimationSpin : Animation
+            - revealAnimationOpacity : Animation
+            - revealAnimationSpinAndOpacity : Animation
+            - setBlack : Animation
+            - guessButtonListener : OnClickListener
+            + onCreateView()
+            + reset()\n - Resets the quiz state
+            + setMode()\n - Changes the current game mode
+            + getMode()\n - Gets the current game mode
+            + updateRegions()\n - Changes the current regions the quiz\nwill choose Pokemon from
+            - pokeInRegions()\n - Determines if a random Pokemon is within\nthe regions selected by the user
+            - getPokeName()\n - Retrieves a formatted Pokemon name from\nthe filename of its image
+            - getPokeDexNum()\n - Retrieves the Pokedex number from the\nfilename of its image
+            - initPokeList()\n - Initializes the list of Pokemon filenames for the quiz
+            - loadNextPoke()\n - Loads and displays the next Pokemon in the list
+            - displayResults()\n - Creates and displays a dialog to show the user's score
+        }
+
+        class ObscuringImageView {
+            + ObscuringImageView()
+            + ObscuringImageView()
+            + setSilhouetteBitmap()\n - Provided with a bitmap, this method creates\na version of the same bitmap with any non-alpha\npixels set to black
+            + reset()\n - Resets the image to a 1x1 bitmap
+        }
+
+
+        class ObscuringView {
+            {static} - TOUCH_TOLERANCE : float
+            ~ bitmap : Bitmap
+            ~ paint : Paint
+            ~ mCanvas : Canvas
+            ~ matrix : Matrix
+            ~ paintScreen : Paint
+            - pathMap : Map<Integer, Path>
+            - previousPointMap : Map<Integer, Point>
+            + ObscuringView()
+            + ObscuringView()
+            + reset()\n - Resets the canvas to a 1x1 bitmap
+            - setUpDrawing()\n - Sets the necessary paint values\nto allow the user to erase a black bitmap
+            + setUpBitmap()\n - Sets up the black square bitmap\non the canvas
+            + getPercentErased()\n - Determines the amount of the canvas\nthat's been erased
+            # onDraw()\n - Keeps track of paths and draws\nthem during the draw event
+            + onTouchEvent()\n - Begins the touch event/path handling
+            - touchStarted()\n - Initializes a path to draw
+            - touchMoved()\n - Modifies that path to draw
+            - touchEnded()\n - Finalizes the path and commits it to the bitmap
+        }
+
+        class SettingsActivity {
+            # onCreate()
+        }
+
+        class SettingsActivityFragment {
+            + SettingsActivityFragment()
+            + onCreate()
+        }
+    }
+  
+    SettingsActivity -up-|> AppCompatActivity : is an AppCompatActivity
+    SettingsActivityFragment -up-|> PreferenceFragment : is a PreferenceFragment
+    GameModeSelectFragment -up-|> DialogFragment : is a DialogFragment
+    IgnoredPreference -up-|> ListPreference : is a ListPreference
+    MainActivity -up-|> AppCompatActivity
+    MainActivity o-- MainActivityFragment : pkmnFragment
+    MainActivity +-down- GameMode : declares GameMode
+    MainActivityFragment -up-|> Fragment : is a Fragment
+    MainActivityFragment o-- GameMode : keeps track of mode
+    MainActivityFragment o-- ObscuringImageView : obsImageView used in MainActivityFragment
+    MainActivityFragment o-- ObscuringView : obsView used in MainActivityFragment
+    ObscuringImageView -up-|> AppCompatImageView : is an AppCompatImageView
+    ObscuringView -up-|> View : is a View
+
+@enduml

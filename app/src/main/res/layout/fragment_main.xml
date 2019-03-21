@@ -4,16 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivityFragment"
+    android:background="@drawable/background"
     android:columnCount="1"
-    android:rowCount="4">
+    android:rowCount="4"
+    tools:context=".MainActivityFragment">
 
     <TextView
         android:id="@+id/progressTextView"
         android:layout_gravity="center_horizontal"
+        android:padding="@dimen/progress_text_padding"
         android:text="@string/quiz_progress"
         android:textSize="@dimen/progress_text_size"
-        android:padding="@dimen/progress_text_padding"/>
+        android:textStyle="bold"/>
 
     <android.widget.FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -63,7 +65,9 @@
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_margin="@dimen/button_padding"
-            android:text="@string/placeholder_button" />
+            android:text="@string/placeholder_button"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/guessButton2"
@@ -71,7 +75,9 @@
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_margin="@dimen/button_padding"
-            android:text="@string/placeholder_button" />
+            android:text="@string/placeholder_button"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/white"/>
 
         <Button
             android:id="@+id/guessButton3"
@@ -79,7 +85,9 @@
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_margin="@dimen/button_padding"
-            android:text="@string/placeholder_button" />
+            android:text="@string/placeholder_button"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/white"/>
 
         <Button
             android:id="@+id/guessButton4"
@@ -87,7 +95,9 @@
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_margin="@dimen/button_padding"
-            android:text="@string/placeholder_button" />
+            android:text="@string/placeholder_button"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/white"/>
     </GridLayout>
 
     <TextView

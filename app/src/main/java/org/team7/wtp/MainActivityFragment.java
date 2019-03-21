@@ -128,6 +128,9 @@ public class MainActivityFragment extends Fragment {
 
         Set<String> regionSet = defaultSharedPreferences.getStringSet(MainActivity.REGIONS, null);
 
+        if (regionSet.size() == 0)
+            regionSet.add(getString(R.string.region_default));
+
         Pair<Integer, Integer> kanto = new Pair<>(0, 151);
         Pair<Integer, Integer> johto = new Pair<>(152, 251);
         Pair<Integer, Integer> hoenn = new Pair<>(252, 386);
